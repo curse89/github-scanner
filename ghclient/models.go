@@ -74,8 +74,6 @@ func (repo *Repos) UnmarshalJSON(data []byte) (err error) {
 		if visibility, ok := mdata["visibility"].(string); ok {
 			repo.Visibility = visibility
 		}
-	} else {
-		repo.Error = errors.New("ошибка десереализации данных")
 	}
 
 	return

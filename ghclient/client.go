@@ -2,8 +2,8 @@ package ghclient
 
 import (
 	"fmt"
-	"io"
 	"net/http"
+	"sort"
 )
 
 const BASE_PATH = "https://api.github.com/"
@@ -19,14 +19,18 @@ func init() {
 	loadToken()
 }
 
-func GetUserReposList(userName string) ReposList {
+func GetUserReposList(userName string, needSort bool) ReposList {
 	path := fmt.Sprintf("users/%s/repos", userName)
 	result, err := makeGetRequest(path)
 	if err != nil {
 		return NewErrorReposList(err)
 	}
+
 	var reposList ReposList
 	DeserializeResult(result, &reposList)
+	if needSort {
+		sort.Sort(reposList)
+	}
 
 	return reposList
 }
@@ -53,10 +57,7 @@ func makeGetRequest(path string) (string, error) {
 	response, err := client.Do(request)
 
 	if err != nil || response.StatusCode != 200 {
-		fmt.Println(err)
-		test, _ := io.ReadAll(response.Body)
-		fmt.Println(test)
-		return "", fmt.Errorf("%v: ошибка получения данных", path)
+		return "", fmt.Errorf("%v: status: %v - ошибка", path, response.StatusCode)
 	}
 	defer response.Body.Close()
 

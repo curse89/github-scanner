@@ -15,6 +15,5 @@ func getArgs() []string {
 }
 
 func main() {
-	//accounts := getArgs()
-	dataprocesser.ProcessAccounts([]string{"symfony", "curse89", "asdasda"})
+	dataprocesser.ProcessAccounts(getArgs())
 }

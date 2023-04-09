@@ -3,7 +3,6 @@ package ghclient
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -12,7 +11,7 @@ import (
 func readResponse(response *http.Response) (string, error) {
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		fmt.Println(err)
+		//fmt.Println(err)
 		return "", err
 	}
 	return string(body), nil
